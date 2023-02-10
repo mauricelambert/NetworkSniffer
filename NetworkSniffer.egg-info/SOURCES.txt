@@ -1,0 +1,10 @@
+LICENSE.txt
+MANIFEST.in
+NetworkSniffer.py
+README.md
+setup.py
+NetworkSniffer.egg-info/PKG-INFO
+NetworkSniffer.egg-info/SOURCES.txt
+NetworkSniffer.egg-info/dependency_links.txt
+NetworkSniffer.egg-info/entry_points.txt
+NetworkSniffer.egg-info/top_level.txt
