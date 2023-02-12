@@ -131,7 +131,7 @@ Content-Length: 1256
 >>> 
 """
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 __author__ = "Maurice Lambert"
 __author_email__ = "mauricelambert434@gmail.com"
 __maintainer__ = "Maurice Lambert"
@@ -151,7 +151,23 @@ under certain conditions.
 __license__ = license
 __copyright__ = copyright
 
-__all__ = ["Sniffer", "MacFilter", "IpFilter", "PortsFilter", 'TcpFilter', 'UdpFilter', 'IPv4Filter', 'IPv6Filter', 'NetworksFilter', 'hexadecimal', 'hexadecimal_data', 'raw', 'raw_data', 'summary', 'get_addresses']
+__all__ = [
+    "Sniffer",
+    "MacFilter",
+    "IpFilter",
+    "PortsFilter",
+    "TcpFilter",
+    "UdpFilter",
+    "IPv4Filter",
+    "IPv6Filter",
+    "NetworksFilter",
+    "hexadecimal",
+    "hexadecimal_data",
+    "raw",
+    "raw_data",
+    "summary",
+    "get_addresses",
+]
 
 print(copyright)
 
@@ -1261,8 +1277,7 @@ class WindowsRawSocket:
 
     def __enter__(self) -> WindowsRawSocket:
         self.socket = socket(self.type, SOCK_RAW, IPPROTO_IP)
-        try:self.socket.bind(self.ip)
-        except:breakpoint()
+        self.socket.bind(self.ip)
 
         self.socket.setsockopt(self.protocol, self.to_get, 0)
         self.socket.ioctl(SIO_RCVALL, RCVALL_ON)
@@ -1678,26 +1693,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     exit(main())
-
-"""2
-3
-4
-9
-10
-11
-14
-19
-21
-22
-24
-25
-28
-31
-38
-40
-47
-50
-51
-60
-70
-71"""
