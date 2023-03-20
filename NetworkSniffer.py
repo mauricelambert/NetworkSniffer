@@ -131,7 +131,7 @@ Content-Length: 1256
 >>> 
 """
 
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 __author__ = "Maurice Lambert"
 __author_email__ = "mauricelambert434@gmail.com"
 __maintainer__ = "Maurice Lambert"
@@ -647,10 +647,17 @@ class Sniffer:
             "00:00:00:00:00:00", "00:00:00:00:00:00", 0x0800, packet
         )
         parsed_type = self.ipv4_parse(packet)
+
+        if parsed_type is None:
+            return None
+
         parsed_protocol = getattr(
             self,
             ip_protocols_functions.get(parsed_type.protocol, "unknow_parse"),
         )(parsed_type.data)
+
+        if parsed_protocol is None:
+            return None
 
         tuple(
             callback(packet, ethernet, parsed_type, parsed_protocol)
@@ -677,9 +684,13 @@ class Sniffer:
             "0000:0000:0000:0000:0000:0000:0000:0000",
             packet,
         )
+
         parsed_protocol = getattr(
             self, ip_protocols_functions.get(ipv6.protocol, "unknow_parse")
         )(ipv6.data)
+
+        if parsed_protocol is None:
+            return None
 
         tuple(
             callback(packet, ethernet, ipv6, parsed_protocol)
@@ -940,10 +951,13 @@ class IpsFilter(IpFilter):
 
     def ipv4_parse(self, packet: bytes) -> IPv4:
         """
-        This function filters on IPv4 addresses.
+        This function filters on IPv4 addresses.0
         """
 
         packet = super().ipv4_parse(packet)
+
+        if packet is None:
+            return None
 
         if (
             packet.source in self.ipv4_filters
@@ -959,6 +973,9 @@ class IpsFilter(IpFilter):
         """
 
         packet = super().ipv6_parse(packet)
+
+        if packet is None:
+            return None
 
         if (
             packet.source in self.ipv6_filters
@@ -999,6 +1016,10 @@ class NetworksFilter(IpFilter):
         """
 
         packet = super().ipv4_parse(packet)
+
+        if packet is None:
+            return None
+
         source = ip_address(packet.source)
         destination = ip_address(packet.destination)
 
@@ -1015,6 +1036,9 @@ class NetworksFilter(IpFilter):
         """
 
         packet = super().ipv6_parse(packet)
+
+        if packet is None:
+            return None
 
         if (
             ip_address(packet.source) in self.networkv6_filters
@@ -1123,6 +1147,9 @@ class PortsFilter(IpFilter):
 
         packet = super().ipv4_parse(packet)
 
+        if packet is None:
+            return None
+
         if packet.protocol == 0x06 or packet.protocol == 0x11:
             return packet
 
@@ -1135,6 +1162,9 @@ class PortsFilter(IpFilter):
 
         packet = super().ipv6_parse(packet)
 
+        if packet is None:
+            return None
+
         if packet.protocol == 0x06 or packet.protocol == 0x11:
             return packet
 
@@ -1146,6 +1176,9 @@ class PortsFilter(IpFilter):
         """
 
         segment = super().tcp_parse(segment)
+
+        if segment is None:
+            return None
 
         if (
             segment.source in self.port_filters
@@ -1161,6 +1194,9 @@ class PortsFilter(IpFilter):
         """
 
         segment = super().tcp_parse(segment)
+
+        if segment is None:
+            return None
 
         if (
             segment.source in self.port_filters
@@ -1189,6 +1225,9 @@ class TcpFilter(IpFilter):
 
         packet = super().ipv4_parse(packet)
 
+        if packet is None:
+            return None
+
         if packet.protocol == 0x06:
             return packet
 
@@ -1200,6 +1239,9 @@ class TcpFilter(IpFilter):
         """
 
         packet = super().ipv6_parse(packet)
+
+        if packet is None:
+            return None
 
         if packet.protocol == 0x06:
             return packet
@@ -1225,6 +1267,9 @@ class UdpFilter(IpFilter):
 
         packet = super().ipv4_parse(packet)
 
+        if packet is None:
+            return None
+
         if packet.protocol == 0x11:
             return packet
 
@@ -1236,6 +1281,9 @@ class UdpFilter(IpFilter):
         """
 
         packet = super().ipv6_parse(packet)
+
+        if packet is None:
+            return None
 
         if packet.protocol == 0x11:
             return packet

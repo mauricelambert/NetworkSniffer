@@ -2,6 +2,7 @@ LICENSE.txt
 MANIFEST.in
 NetworkSniffer.py
 README.md
+setup.cfg
 setup.py
 NetworkSniffer.egg-info/PKG-INFO
 NetworkSniffer.egg-info/SOURCES.txt
